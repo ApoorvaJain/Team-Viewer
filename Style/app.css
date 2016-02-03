@@ -1,0 +1,45 @@
+@font-face {
+font-family: pacifico;
+src: url('fonts/pacifico/Pacifico.ttf')  format('truetype');
+}
+
+
+html, body {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	background-color: #fff;
+}
+
+header {
+	height: 70px;
+	position: relative;
+	
+	background-color: #1a237e;
+	padding-top: 1px;
+	padding-left: 20px;
+	vertical-align: center; 
+}
+
+.md-toolbar-tools h1 {
+	color: #fff;
+	font-size: 1.5em;
+	font-family: pacifico;
+}
+
+md-input-container .md-errors-spacer {
+  float: right;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+.md-toolbar-tools .md-button{
+	min-width: 15px;
+	line-height: 0px;
+}
+
+.md-toolbar-tools .md-button ng-md-icon svg {
+	fill: white;
+}
