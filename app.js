@@ -13,7 +13,7 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",
+			description: "Team : Oasis_Automation<br />Designation : Developer<br />Discipline : Dev<br />Lead : Swarup<br />Manager : Dominic<br />Location : Hyderabad",
 		},
 		{
 			id: 2,
@@ -28,7 +28,7 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Lead<br />Discipline : Dev<br />Manager : Dominic<br />Location : Hyderabad",	
 		},
 		{
 			id: 3,
@@ -49,7 +49,7 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Manager<br />Discipline : Management<br />Location : Hyderabad",	
 		},
 		{
 			id: 4,
@@ -70,10 +70,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Quality Assurance Engineer<br />Discipline : QA<br />Manager : Dominic<br />Location : Hyderabad",	
 		},
 		{
-			id: 1,
+			id: 5,
 			name: "Apoorva",
 			displayPicture: "something.src",
 			discipline: "Dev",
@@ -85,10 +85,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",
+			description: "Team : Oasis_Automation<br />Designation : Developer<br />Discipline : Dev<br />Lead : Swarup<br />Manager : Dominic<br />Location : Hyderabad",
 		},
 		{
-			id: 2,
+			id: 6,
 			name: "Swarup",
 			displayPicture: "something.src",
 			discipline: "Dev",
@@ -100,10 +100,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Lead<br />Discipline : Dev<br />Manager : Dominic<br />Location : Hyderabad",	
 		},
 		{
-			id: 3,
+			id: 7,
 			name: "Dominic",
 			displayPicture: "something.src",
 			discipline: "Management",
@@ -121,10 +121,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Manager<br />Discipline : Management<br />Location : Hyderabad",	
 		},
 		{
-			id: 4,
+			id: 8,
 			name: "Sneha",
 			displayPicture: "something.src",
 			discipline: "QA",
@@ -142,10 +142,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Quality Assurance Engineer<br />Discipline : QA<br />Manager : Dominic<br />Location : Hyderabad",	
 		},
 		{
-			id: 1,
+			id: 9,
 			name: "Apoorva",
 			displayPicture: "something.src",
 			discipline: "Dev",
@@ -157,10 +157,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",
+			description: "Team : Oasis_Automation<br />Designation : Developer<br />Discipline : Dev<br />Lead : Swarup<br />Manager : Dominic<br />Location : Hyderabad",
 		},
 		{
-			id: 2,
+			id: 10,
 			name: "Swarup",
 			displayPicture: "something.src",
 			discipline: "Dev",
@@ -172,10 +172,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Lead<br />Discipline : Dev<br />Manager : Dominic<br />Location : Hyderabad",	
 		},
 		{
-			id: 3,
+			id: 11,
 			name: "Dominic",
 			displayPicture: "something.src",
 			discipline: "Management",
@@ -193,10 +193,10 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Manager<br />Discipline : Management<br />Location : Hyderabad",	
 		},
 		{
-			id: 4,
+			id: 12,
 			name: "Sneha",
 			displayPicture: "something.src",
 			discipline: "QA",
@@ -214,13 +214,16 @@
 				strength: 5
 				}],
 			location: "Hyderabad",
-			description: "blah blah blah",	
+			description: "Team : Oasis_Automation<br />Designation : Quality Assurance Engineer<br />Discipline : QA<br />Manager : Dominic<br />Location : Hyderabad",	
 		}
 	];
 
-  	var app = angular.module('teamViewer', ['ngMaterial','ngMdIcons']);
+  	var app = angular.module('teamViewer', ['ngMaterial','ngMdIcons', 'ngSanitize']);
+
   	
-  	app.controller('TeamController', function($scope) {
+  	app.controller('TeamController', function($scope, $mdDialog, $mdMedia) {
+
+
     	$scope.members = members;
     	$scope.filter = {};
 
@@ -339,7 +342,51 @@
     	    return arrayFromObject(groups);
     	}
 
+    	/* For Dialogue box - change template to templateUrl */
     	
+  		$scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+
+
+		$scope.showAdvanced = function(ev, member, members) {
+		  	var memberLead = '';
+		  	var memberManager = ''; 
+		  	var noLead = false; 
+		  	var noManager = false; 
+		  	for ( var index = 0; index < members.length; index++){
+		  		if( member.teams[0].lead != null){
+			  		if( members[index].id == member.teams[0].lead ){
+			  			memberLead = members[index].name;
+			  		}
+		  		}else{
+		  			noLead = true; 
+		  		}
+		  		if( member.teams[0].manager != null){
+		  			if(members[index].id == member.teams[0].manager ){
+		  				memberManager = members[index].name;
+		  			}
+		  		}else{
+		  			noManager = true;
+		  		}
+		  		if((memberLead != '' && memberManager != '') || (noLead && noManager) || (memberLead != '' && noManager) || ( memberManager != '' && noLead)){
+		  			break;
+		  		}
+		  	}
+		    var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+		    $mdDialog.show({
+		     	controller: DialogController,
+		    	template: "<md-dialog ng-cloak><md-toolbar class='md-hue-1'><div class='md-toolbar-tools'><h2>"+member.name+"</h2><span flex></span><md-button class='md-icon-button' ng-click='cancel()' ><span class='md-title'>X<span></md-icon></md-button></div></md-toolbar><md-dialog-content><div class='md-dialog-content'><div class=''><img class='dialogue-img' alt='Member Image' src='http://worldartsme.com/images/business-person-clipart-1.jpg'></div><div class='chip-space'><md-chips><md-chip>"+member.designation+"</md-chip><md-chip>"+member.discipline+"</md-chip><md-chip>"+member.teams[0].name+"</md-chip></md-chips></div><div class=''><p>Team : "+member.teams[0].name+"</p><p>Designation : "+member.designation+"</p><p>Discipline : "+member.discipline+"</p><p data-ng-hide='"+noLead+"'>Lead : "+memberLead+"</p><p data-ng-hide='"+noManager+"'>Manager : "+memberManager+"</p><p>Location : "+member.location+"</p></div></div></md-dialog-content></md-dialog>",
+		    	parent: angular.element(document.body),
+		     	targetEvent: ev,
+		     	clickOutsideToClose:true,
+		    	fullscreen: useFullScreen
+		    });
+		    $scope.$watch(function() {
+		     	return $mdMedia('xs') || $mdMedia('sm');
+		    }, function(wantsFullScreen) {
+		   	    $scope.customFullscreen = (wantsFullScreen === true);
+		    });
+ 	 };
+
   	});
 
 	app.config(function($mdThemingProvider) {
@@ -358,5 +405,19 @@
 	    }).accentPalette('pink');
 	  $mdThemingProvider.theme('input', 'default').primaryPalette('grey')
 	});
+
+
+	function DialogController($scope, $mdDialog) {
+	  $scope.hide = function() {
+	    $mdDialog.hide();
+	  };
+	  $scope.cancel = function() {
+	    $mdDialog.cancel();
+	  };
+	  $scope.answer = function(answer) {
+	    $mdDialog.hide(answer);
+	  };
+	}
+
 
 })();
