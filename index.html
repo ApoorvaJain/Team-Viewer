@@ -6,7 +6,9 @@
 	<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 	<link rel="stylesheet" href="Style/app.css">
 
+
 	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular/angular-sanitize.min.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
@@ -16,7 +18,7 @@
 
 <body ng-controller="TeamController as team" layout="column">
 
-	<div layout="column" class="relative" layout-fill role="main">
+	<div layout="column" class="relative" layout-fill role="main" >
 	    	<md-toolbar class="md-hue-1" ng-show="!showSearch">
 		        <div class="md-toolbar-tools">
 		        	<h1>Meet the neilsens</h1>
@@ -45,7 +47,7 @@
 		          </h2>
 		          <md-input-container md-theme="input" flex>
 		            <label>&nbsp;</label>
-		            <input ng-model="search.who" placeholder="enter search">
+		            <input ng-model="search.name" placeholder="Search By Name">
 		          </md-input-container>
 		          <md-button aria-label="Search" ng-click="showSearch = !showSearch">
 		            <ng-md-icon icon="search"></ng-md-icon>
@@ -60,14 +62,38 @@
 	  	      		<md-content class="md-padding" layout="column" style="overflow : auto">
 	  	      			
   	      				<div ng-repeat="group in groups">
-  	      					<h3> {{group.title}} </h3>
+  	      					<h3 class="md-headline tv-subheader head-bg"> {{group.title}} </h3>
   			      			<md-grid-list
   			      			        md-cols="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
   			      			        md-row-height-gt-md="1:1" md-row-height="4:3"
   			      			        md-gutter="8px" md-gutter-gt-sm="4px" >
-  			      			    <md-grid-tile ng-repeat="member in group.members">	
+
+  			      			        <!-- Developer : Surabhi -->
+
+  			      			        <div class="module-container" ng-repeat="member in group.members | filter:search">
+										<div class="inner-module">
+											<a href="#" alt="" title="" tabindex="0" ng-click="showAdvanced($event, member, group.members)">
+												<div class="image">
+													<div class="img">
+														<img src="http://worldartsme.com/images/business-person-clipart-1.jpg"  title="" alt="Loading Image..">
+													</div>
+												</div>
+											</a>
+											<div class="content">
+												<h4 class="title">{{member.name}}</h4>
+												<div class="desc">
+													<span class="desc-content" data-ng-bind-html="member.description"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+  			      			<!--    <md-grid-tile ng-repeat="member in group.members">	
   			      			      <md-grid-tile-footer><h3>{{member.name}}</h3></md-grid-tile-footer>
-  			      			    </md-grid-tile>
+  			      			    </md-grid-tile> -->
+
+  			      			    <!-- Developer : Surabhi -->
   			      			</md-grid-list>
   			      		</div>
 	  		      		
@@ -77,6 +103,5 @@
 	      	</md-content>
 	</div>
 
-	
 </body>
 </html>
